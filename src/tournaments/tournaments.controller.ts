@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { TournamentsService } from './tournaments.service';
 import { CreateTournamentDto } from './dto/create-tournament.dto';
 import { UpdateTournamentDto } from './dto/update-tournament.dto';
@@ -13,7 +13,13 @@ export class TournamentsController {
   }
 
   @Get()
-  findAll() {
+  findAll(
+    @Query("score") score:number,
+    @Query("score_gt") score_gt:number,
+    @Query("score_gte") score_gte:number,
+    @Query("score_lt") score_lt:number,
+    @Query("score_lte") score_lte:number,
+  ) {
     return this.tournamentsService.findAll();
   }
 

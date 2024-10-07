@@ -24,6 +24,6 @@ export class Tournament {
     @OneToMany(()=>Winner,winners=>winners.tournament)
     winner:Winner[];
 
-    @OneToMany(()=>TournamentsPlayer,tournamentPlayer=>tournamentPlayer.tournament,{eager:true})
+    @OneToMany(()=>TournamentsPlayer,tournamentPlayer=>tournamentPlayer.tournament)
     tournamentPlayer:TournamentsPlayer[];
 }

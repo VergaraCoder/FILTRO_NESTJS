@@ -5,13 +5,15 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { TournamentsPlayer } from './entities/tournaments-player.entity';
 import { Repository } from 'typeorm';
 import { manageError } from 'src/common/errors/custom/manage.error';
+import { FilterDataTournamentService } from './filterData/filterData';
 
 @Injectable()
 export class TournamentsPlayersService {
 
   constructor(
     @InjectRepository(TournamentsPlayer)
-    private tournamentPlayerRepository:Repository<TournamentsPlayer>
+    private tournamentPlayerRepository:Repository<TournamentsPlayer>,
+    private filterDataTournamentPlayer:FilterDataTournamentService
   ){}
 
   async create(createTournamentsPlayerDto: CreateTournamentsPlayerDto) {
@@ -19,8 +21,14 @@ export class TournamentsPlayersService {
     await this.tournamentPlayerRepository.save(dataToCreate);
   }
 
-  async findAll() {
+  async findAll(querys?:any) {
     try{
+
+      if(Object.values(querys).every(item=>item!== undefined)){
+        return await this.filterDataTournamentPlayer.returnResults(this.tournamentPlayerRepository,querys);
+      }
+
+
       const playersOfTournament= await this.tournamentPlayerRepository.find();
       if(playersOfTournament.length==0){
         throw new manageError({
@@ -28,7 +36,10 @@ export class TournamentsPlayersService {
           message:"DOES NOT EXIST REGISTERS"
         });
       } 
+
       return playersOfTournament;
+
+      
     }catch(err:any){
       throw manageError.signedError(err.message);
     }

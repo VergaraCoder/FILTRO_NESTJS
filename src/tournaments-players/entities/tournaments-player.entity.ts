@@ -1,7 +1,8 @@
 import { Player } from "src/players/entities/player.entity";
 import { Tournament } from "src/tournaments/entities/tournament.entity";
-import { Column, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
 
+@Entity("tournamentsPlayer")
 export class TournamentsPlayer {
     @PrimaryGeneratedColumn()
     id:Number;
@@ -12,9 +13,12 @@ export class TournamentsPlayer {
     @Column()
     tournamentId:number;
 
-    @ManyToOne(()=>Player,player=>player.tournamentPlayer)
+    @Column()
+    scorePlayer:number;
+
+    @ManyToOne(()=>Player,player=>player.tournamentPlayer,{eager:true})
     player:Player;
 
-    @ManyToOne(()=>Tournament,tournament=>tournament.tournamentPlayer)
+    @ManyToOne(()=>Tournament,tournament=>tournament.tournamentPlayer,{eager:true})
     tournament:Tournament;
 }
