@@ -10,6 +10,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeOrmCredentials } from './common/database/dbconfig/db.config';
 import { EventsModule } from './events/events.module';
 import { WinnersModule } from './winners/winners.module';
+import { TournamentsPlayersModule } from './tournaments-players/tournaments-players.module';
 
 @Module({
   imports: [
@@ -23,7 +24,7 @@ import { WinnersModule } from './winners/winners.module';
       inject:[ConfigService],
       useClass:TypeOrmCredentials
     }),
-    PlayersModule, TournamentsModule, AuthModule, CommonModule, UsersModule, RoleModule, EventsModule, WinnersModule],
+    PlayersModule, TournamentsModule, AuthModule, CommonModule, UsersModule, RoleModule, EventsModule, WinnersModule, TournamentsPlayersModule],
   controllers: [],
   providers: [],
 })

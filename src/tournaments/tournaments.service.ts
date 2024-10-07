@@ -1,26 +1,82 @@
 import { Injectable } from '@nestjs/common';
 import { CreateTournamentDto } from './dto/create-tournament.dto';
 import { UpdateTournamentDto } from './dto/update-tournament.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Tournament } from './entities/tournament.entity';
+import { Repository } from 'typeorm';
+import { manageError } from 'src/common/errors/custom/manage.error';
 
 @Injectable()
 export class TournamentsService {
-  create(createTournamentDto: CreateTournamentDto) {
-    return 'This action adds a new tournament';
+
+  constructor(
+    @InjectRepository(Tournament)
+    private tournamentRepository:Repository<Tournament>
+  ){}
+
+  async create(createTournamentDto: CreateTournamentDto) {
+    const dataTournament=this.tournamentRepository.create(createTournamentDto);
+    await this.tournamentRepository.save(dataTournament);
+    return dataTournament;
   }
 
-  findAll() {
-    return `This action returns all tournaments`;
+  async findAll(querys?:any) {
+    try{
+      const tournaments=await this.tournamentRepository.find();
+      if(tournaments.length==0){
+        throw new manageError({
+          type:"NOT_FOUND",
+          message:"DOES THERE ARE NOT REGISTERS"
+        });
+      }  
+      return tournaments;
+    }catch(err:any){
+      throw manageError.signedError(err.message);
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} tournament`;
+  async findOne(id: number) {
+    try{
+      const tournament=await this.tournamentRepository.findOneBy({id:id});
+      if(!tournament){
+        throw new manageError({
+          type:"NOT_FOUND",
+          message:"THAT TOURNAMENT NOT EXIST"
+        });
+      }  
+      return tournament;
+    }catch(err:any){
+      throw manageError.signedError(err.message);
+    }
   }
 
-  update(id: number, updateTournamentDto: UpdateTournamentDto) {
-    return `This action updates a #${id} tournament`;
+  async update(id: number, updateTournamentDto: UpdateTournamentDto) {
+    try{
+      const {affected}=await this.tournamentRepository.update(id,updateTournamentDto);
+      if(affected==0){
+        throw new manageError({
+          type:"NOT_FOUND",
+          message:"THE TOURNAMENT COULD NOT BE UPDATED BECAUSE IT DOES NOT EXIST."
+        });
+      }  
+      return "perfect update";
+    }catch(err:any){
+      throw manageError.signedError(err.message);
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} tournament`;
+  async remove(id: number) {
+    try{
+      const {affected}=await this.tournamentRepository.delete(id);
+      if(affected==0){
+        throw new manageError({
+          type:"NOT_FOUND",
+          message:"THE TOURNAMENT COULD NOT BE DELETED BECAUSE IT DOES NOT EXIST."
+        });
+      }  
+      return "perfect delete";
+    }catch(err:any){
+      throw manageError.signedError(err.message);
+    }
   }
 }

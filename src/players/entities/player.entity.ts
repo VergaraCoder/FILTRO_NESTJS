@@ -1,6 +1,7 @@
+import { TournamentsPlayer } from "src/tournaments-players/entities/tournaments-player.entity";
 import { Tournament } from "src/tournaments/entities/tournament.entity";
 import { Winner } from "src/winners/entities/winner.entity";
-import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinTable, ManyToMany, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity("players")
 export class Player {
@@ -16,9 +17,8 @@ export class Player {
     @Column()
     winners:number;
 
-    @ManyToMany(()=>Tournament,tournament=>tournament.player)
-    @JoinTable()
-    tournament:Tournament[];
+    @OneToMany(()=>TournamentsPlayer,tournament=>tournament.player)
+    tournamentPlayer:TournamentsPlayer[];
 
     @OneToMany(()=>Winner,winner=>winner.player)
     winner:Winner[];
