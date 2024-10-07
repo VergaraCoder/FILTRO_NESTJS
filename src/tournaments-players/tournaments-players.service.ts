@@ -1,26 +1,81 @@
 import { Injectable } from '@nestjs/common';
 import { CreateTournamentsPlayerDto } from './dto/create-tournaments-player.dto';
 import { UpdateTournamentsPlayerDto } from './dto/update-tournaments-player.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { TournamentsPlayer } from './entities/tournaments-player.entity';
+import { Repository } from 'typeorm';
+import { manageError } from 'src/common/errors/custom/manage.error';
 
 @Injectable()
 export class TournamentsPlayersService {
-  create(createTournamentsPlayerDto: CreateTournamentsPlayerDto) {
-    return 'This action adds a new tournamentsPlayer';
+
+  constructor(
+    @InjectRepository(TournamentsPlayer)
+    private tournamentPlayerRepository:Repository<TournamentsPlayer>
+  ){}
+
+  async create(createTournamentsPlayerDto: CreateTournamentsPlayerDto) {
+    const dataToCreate=this.tournamentPlayerRepository.create(createTournamentsPlayerDto);
+    await this.tournamentPlayerRepository.save(dataToCreate);
   }
 
-  findAll() {
-    return `This action returns all tournamentsPlayers`;
+  async findAll() {
+    try{
+      const playersOfTournament= await this.tournamentPlayerRepository.find();
+      if(playersOfTournament.length==0){
+        throw new manageError({
+          type:"NOT_FOUND",
+          message:"DOES NOT EXIST REGISTERS"
+        });
+      } 
+      return playersOfTournament;
+    }catch(err:any){
+      throw manageError.signedError(err.message);
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} tournamentsPlayer`;
+  async findOne(id: number) {
+    try{
+      const playerOfTournament= await this.tournamentPlayerRepository.findOneBy({id:id});
+      if(!playerOfTournament){
+        throw new manageError({
+          type:"NOT_FOUND",
+          message:"THAT PLAYER NOT EXIST"
+        });
+      } 
+      return playerOfTournament;
+    }catch(err:any){
+      throw manageError.signedError(err.message);
+    }
   }
 
-  update(id: number, updateTournamentsPlayerDto: UpdateTournamentsPlayerDto) {
-    return `This action updates a #${id} tournamentsPlayer`;
+  async update(id: number, updateTournamentsPlayerDto: UpdateTournamentsPlayerDto) {
+    try{
+      const {affected}= await this.tournamentPlayerRepository.update(id,updateTournamentsPlayerDto);
+      if(affected==0){
+        throw new manageError({
+          type:"NOT_FOUND",
+          message:"FAILED TO UPDATE"
+        });
+      } 
+      return "PERFECT UPDATE";
+    }catch(err:any){
+      throw manageError.signedError(err.message);
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} tournamentsPlayer`;
+  async remove(id: number) {
+    try{
+      const {affected}= await this.tournamentPlayerRepository.delete(id);
+      if(affected==0){
+        throw new manageError({
+          type:"NOT_FOUND",
+          message:"FAILED TO DELETED"
+        });
+      } 
+      return "PERFECT DELETED";
+    }catch(err:any){
+      throw manageError.signedError(err.message);
+    }
   }
 }
