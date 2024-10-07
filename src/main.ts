@@ -12,12 +12,14 @@ async function bootstrap() {
   const dataSource=app.get(DataSource);
   app.use(cookie(config.get("SIGNED_COOKIE")));
 
-  const userSeeder=new seederUser();
-  await userSeeder.run(dataSource);
 
 
   const roleSeeder=new seederRole();
   await roleSeeder.run(dataSource);
+
+
+  const userSeeder=new seederUser();
+  await userSeeder.run(dataSource);
 
   await app.listen(3000);
 }

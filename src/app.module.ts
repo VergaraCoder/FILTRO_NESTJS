@@ -11,6 +11,7 @@ import { TypeOrmCredentials } from './common/database/dbconfig/db.config';
 import { EventsModule } from './events/events.module';
 import { WinnersModule } from './winners/winners.module';
 import { TournamentsPlayersModule } from './tournaments-players/tournaments-players.module';
+import { TournamentLogicModule } from './tournament-logic/tournament-logic.module';
 
 @Module({
   imports: [
@@ -24,7 +25,7 @@ import { TournamentsPlayersModule } from './tournaments-players/tournaments-play
       inject:[ConfigService],
       useClass:TypeOrmCredentials
     }),
-    PlayersModule, TournamentsModule, AuthModule, CommonModule, UsersModule, RoleModule, EventsModule, WinnersModule, TournamentsPlayersModule],
+    PlayersModule, TournamentsModule, AuthModule, CommonModule, UsersModule, RoleModule, EventsModule, WinnersModule, TournamentsPlayersModule, TournamentLogicModule],
   controllers: [],
   providers: [],
 })
