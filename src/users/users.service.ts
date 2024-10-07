@@ -15,24 +15,70 @@ export class UsersService {
     private userRepository:Repository<User>
   ){}
 
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  async create(createUserDto: CreateUserDto) {
+    const dataUser=this.userRepository.create(createUserDto);
+    await this.userRepository.save(dataUser);
+    return dataUser;
   }
 
-  findAll() {
-    return `This action returns all users`;
+  async findAll() {
+    try{
+      const users=await this.userRepository.find();
+      if(users.length==0){
+        throw new manageError({
+          type:"NOT_FOUND",
+          message:"NOT FOUND REGISTERS"
+        });
+      } 
+      return users;
+    }catch(err:any){
+      throw manageError.signedError(err.message);
+    }
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
+  async findOne(id: string) {
+    try{
+      const user=await this.userRepository.findOneBy({id:id});
+      if(!user){
+        throw new manageError({
+          type:"NOT_FOUND",
+          message:"NOT FOUND "
+        });
+      } 
+      return user;
+    }catch(err:any){
+      throw manageError.signedError(err.message);
+    }
   }
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
+  async update(id: string, updateUserDto: UpdateUserDto) {
+    try{
+      const {affected}=await this.userRepository.update(id,updateUserDto);
+      if(affected==0){
+        throw new manageError({
+          type:"NOT_FOUND",
+          message:"FAILED TO UPDATE"
+        });
+      } 
+      return "perfect update";
+    }catch(err:any){
+      throw manageError.signedError(err.message);
+    }
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+  async remove(id: string) {
+    try{
+      const {affected}=await this.userRepository.delete(id);
+      if(affected==0){
+        throw new manageError({
+          type:"NOT_FOUND",
+          message:"FAILED TO DELETE"
+        });
+      } 
+      return "perfect DELETE";
+    }catch(err:any){
+      throw manageError.signedError(err.message);
+    }
   }
 
   async verifyUserByEmailAndPassword(email:string,password:string){
