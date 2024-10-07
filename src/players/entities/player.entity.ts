@@ -1,4 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Tournament } from "src/tournaments/entities/tournament.entity";
+import { Winner } from "src/winners/entities/winner.entity";
+import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity("players")
 export class Player {
@@ -12,5 +14,12 @@ export class Player {
     age:number;
 
     @Column()
-    level:string;
+    winners:number;
+
+    @ManyToMany(()=>Tournament,tournament=>tournament.player)
+    @JoinTable()
+    tournament:Tournament[];
+
+    @OneToMany(()=>Winner,winner=>winner.player)
+    winner:Winner[];
 }
