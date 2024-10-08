@@ -1,10 +1,42 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { PlayersModule } from './players/players.module';
+import { TournamentsModule } from './tournaments/tournaments.module';
+import { AuthModule } from './auth/auth.module';
+import { CommonModule } from './common/common.module';
+import { UsersModule } from './users/users.module';
+import { RoleModule } from './role/role.module';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { TypeOrmCredentials } from './common/database/dbconfig/db.config';
+import { EventsModule } from './events/events.module';
+import { WinnersModule } from './winners/winners.module';
+import { TournamentsPlayersModule } from './tournaments-players/tournaments-players.module';
+import { TournamentLogicModule } from './tournament-logic/tournament-logic.module';
 
 @Module({
-  imports: [],
-  controllers: [AppController],
-  providers: [AppService],
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: '.env',
+    }),
+
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useClass: TypeOrmCredentials,
+    }),
+    PlayersModule,
+    TournamentsModule,
+    AuthModule,
+    CommonModule,
+    UsersModule,
+    RoleModule,
+    EventsModule,
+    WinnersModule,
+    TournamentsPlayersModule,
+    TournamentLogicModule,
+  ],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
