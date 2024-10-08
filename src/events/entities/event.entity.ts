@@ -1,12 +1,12 @@
-import { Column, PrimaryGeneratedColumn } from "typeorm";
+import { Column, PrimaryGeneratedColumn } from 'typeorm';
 
 export class Event {
-    @PrimaryGeneratedColumn()
-    id:number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column()
-    nameEvent:string;
+  @Column()
+  nameEvent: string;
 
-    @Column()
-    description:string;
+  @Column()
+  description: string;
 }

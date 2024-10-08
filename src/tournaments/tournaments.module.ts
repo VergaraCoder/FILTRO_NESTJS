@@ -1,16 +1,17 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { TournamentsService } from './tournaments.service';
 import { TournamentsController } from './tournaments.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Tournament } from './entities/tournament.entity';
+import { TournamentsPlayersModule } from 'src/tournaments-players/tournaments-players.module';
 
 @Module({
-  imports:[
-    TypeOrmModule.forFeature([Tournament])
+  imports: [
+    TypeOrmModule.forFeature([Tournament]),
+    forwardRef(() => TournamentsPlayersModule),
   ],
   controllers: [TournamentsController],
   providers: [TournamentsService],
-  exports:[TypeOrmModule]
-
+  exports: [TypeOrmModule],
 })
 export class TournamentsModule {}

@@ -1,15 +1,27 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { TournamentLogicService } from './tournament-logic.service';
 import { CreateTournamentLogicDto } from './dto/create-tournament-logic.dto';
 import { UpdateTournamentLogicDto } from './dto/update-tournament-logic.dto';
 
 @Controller('tournament-logic')
 export class TournamentLogicController {
-  constructor(private readonly tournamentLogicService: TournamentLogicService) {}
+  constructor(
+    private readonly tournamentLogicService: TournamentLogicService,
+  ) {}
 
   @Post()
-  create(@Body() createTournamentLogicDto: CreateTournamentLogicDto) {
-    return this.tournamentLogicService.create(createTournamentLogicDto);
+  create(@Body() createTournamentLogicDto: any) {
+    return this.tournamentLogicService.createClashes(
+      createTournamentLogicDto.id,
+    );
   }
 
   @Get()
@@ -23,7 +35,10 @@ export class TournamentLogicController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTournamentLogicDto: UpdateTournamentLogicDto) {
+  update(
+    @Param('id') id: string,
+    @Body() updateTournamentLogicDto: UpdateTournamentLogicDto,
+  ) {
     return this.tournamentLogicService.update(+id, updateTournamentLogicDto);
   }
 

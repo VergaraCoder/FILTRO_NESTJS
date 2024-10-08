@@ -10,26 +10,18 @@ import { RoleGuard } from './jwt/role.guard';
 import { UsersModule } from 'src/users/users.module';
 
 @Module({
-  imports:[
+  imports: [
     UsersModule,
     JwtModule.registerAsync({
-      imports:[ConfigModule],
-      inject:[ConfigService],
-      useFactory:async(configService:ConfigService)=>({
-        secret:configService.get<string>("JWT_SECRET")
-      })
-    })
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (configService: ConfigService) => ({
+        secret: configService.get<string>('JWT_SECRET'),
+      }),
+    }),
   ],
   controllers: [AuthController],
-  providers: [
-    LocalStrategy,
-    LocalGuard,
-    JwtGuard,
-    AuthService,
-    RoleGuard
-  ],
-  exports:[
-    JwtGuard,
-  ]
+  providers: [LocalStrategy, LocalGuard, JwtGuard, AuthService, RoleGuard],
+  exports: [JwtGuard],
 })
 export class AuthModule {}

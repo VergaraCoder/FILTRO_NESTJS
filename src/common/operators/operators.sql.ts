@@ -1,9 +1,6 @@
-
-
-export const operatorsSql={
-    "gt":">",
-    "gte":">=",
-    "lt":"<",
-    "lte":"<="
-}
-
+export const operatorsSql = {
+  _gt: '>',
+  _gte: '>=',
+  _lt: '<',
+  _lte: '<=',
+};

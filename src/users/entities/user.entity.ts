@@ -1,24 +1,30 @@
-import { Role } from "src/role/entities/role.entity";
-import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, Unique } from "typeorm";
+import { Role } from 'src/role/entities/role.entity';
+import {
+  Column,
+  Entity,
+  ManyToOne,
+  PrimaryGeneratedColumn,
+  Unique,
+} from 'typeorm';
 
-@Entity("users")
-@Unique(["email"])
+@Entity('users')
+@Unique(['email'])
 export class User {
-    @PrimaryGeneratedColumn("uuid")
-    id:string;
+  @PrimaryGeneratedColumn('uuid')
+  id: string;
 
-    @Column()
-    name:string;
+  @Column()
+  name: string;
 
-    @Column()
-    email:string;
+  @Column()
+  email: string;
 
-    @Column()
-    password:string;
+  @Column()
+  password: string;
 
-    @Column()
-    roleId:number;
+  @Column()
+  roleId: number;
 
-    @ManyToOne(()=>Role,role=>role.user,{eager:true})
-    role:Role;
+  @ManyToOne(() => Role, (role) => role.user, { eager: true })
+  role: Role;
 }

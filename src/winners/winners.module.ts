@@ -7,17 +7,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Winner } from './entities/winner.entity';
 
 @Module({
-  imports:[
-    TypeOrmModule.forFeature([
-      Winner
-    ]),
+  imports: [
+    TypeOrmModule.forFeature([Winner]),
     PlayersModule,
-    TournamentsModule
+    TournamentsModule,
   ],
   controllers: [WinnersController],
   providers: [WinnersService],
-  exports:[
-    TypeOrmModule
-  ]
+  exports: [TypeOrmModule],
 })
 export class WinnersModule {}

@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { TournamentsPlayersService } from './tournaments-players.service';
 import { TournamentsPlayersController } from './tournaments-players.controller';
 import { PlayersModule } from 'src/players/players.module';
@@ -8,18 +8,13 @@ import { TournamentsPlayer } from './entities/tournaments-player.entity';
 import { FilterDataTournamentService } from './filterData/filterData';
 
 @Module({
-  imports:[
-    TypeOrmModule.forFeature([
-      TournamentsPlayer
-    ]),
+  imports: [
+    TypeOrmModule.forFeature([TournamentsPlayer]),
     PlayersModule,
-    TournamentsModule
+    forwardRef(() => TournamentsModule),
   ],
   controllers: [TournamentsPlayersController],
-  providers: [
-    TournamentsPlayersService,
-    FilterDataTournamentService
-  ],
-  exports:[TypeOrmModule]
+  providers: [TournamentsPlayersService, FilterDataTournamentService],
+  exports: [TypeOrmModule, TournamentsPlayersService],
 })
 export class TournamentsPlayersModule {}

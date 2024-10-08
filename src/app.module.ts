@@ -16,16 +16,26 @@ import { TournamentLogicModule } from './tournament-logic/tournament-logic.modul
 @Module({
   imports: [
     ConfigModule.forRoot({
-      isGlobal:true,
-      envFilePath:".env"
+      isGlobal: true,
+      envFilePath: '.env',
     }),
 
     TypeOrmModule.forRootAsync({
-      imports:[ConfigModule],
-      inject:[ConfigService],
-      useClass:TypeOrmCredentials
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useClass: TypeOrmCredentials,
     }),
-    PlayersModule, TournamentsModule, AuthModule, CommonModule, UsersModule, RoleModule, EventsModule, WinnersModule, TournamentsPlayersModule, TournamentLogicModule],
+    PlayersModule,
+    TournamentsModule,
+    AuthModule,
+    CommonModule,
+    UsersModule,
+    RoleModule,
+    EventsModule,
+    WinnersModule,
+    TournamentsPlayersModule,
+    TournamentLogicModule,
+  ],
   controllers: [],
   providers: [],
 })

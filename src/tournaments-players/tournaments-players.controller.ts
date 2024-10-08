@@ -1,11 +1,22 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query,
+} from '@nestjs/common';
 import { TournamentsPlayersService } from './tournaments-players.service';
 import { CreateTournamentsPlayerDto } from './dto/create-tournaments-player.dto';
 import { UpdateTournamentsPlayerDto } from './dto/update-tournaments-player.dto';
 
 @Controller('tournaments-players')
 export class TournamentsPlayersController {
-  constructor(private readonly tournamentsPlayersService: TournamentsPlayersService) {}
+  constructor(
+    private readonly tournamentsPlayersService: TournamentsPlayersService,
+  ) {}
 
   @Post()
   create(@Body() createTournamentsPlayerDto: CreateTournamentsPlayerDto) {
@@ -13,8 +24,25 @@ export class TournamentsPlayersController {
   }
 
   @Get()
-  findAll() {
-    return this.tournamentsPlayersService.findAll();
+  findAll(
+    @Query('idTournament') tournament: number,
+    @Query('score') score: number,
+    @Query('score_gt') score_gt: number,
+    @Query('score_gte') score_gte: number,
+    @Query('score_lt') score_lt: number,
+    @Query('score_lte') score_lte: number,
+  ) {
+    console.log('entramos');
+    console.log(score_lte);
+
+    return this.tournamentsPlayersService.findAll({
+      tournament: tournament,
+      score: score,
+      score_gt: score_gt,
+      score_gte: score_gte,
+      score_lt: score_lt,
+      score_lte: score_lte,
+    });
   }
 
   @Get(':id')
@@ -23,8 +51,14 @@ export class TournamentsPlayersController {
   }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTournamentsPlayerDto: UpdateTournamentsPlayerDto) {
-    return this.tournamentsPlayersService.update(+id, updateTournamentsPlayerDto);
+  update(
+    @Param('id') id: string,
+    @Body() updateTournamentsPlayerDto: UpdateTournamentsPlayerDto,
+  ) {
+    return this.tournamentsPlayersService.update(
+      +id,
+      updateTournamentsPlayerDto,
+    );
   }
 
   @Delete(':id')

@@ -1,29 +1,41 @@
-import { Player } from "src/players/entities/player.entity";
-import { TournamentsPlayer } from "src/tournaments-players/entities/tournaments-player.entity";
-import { Winner } from "src/winners/entities/winner.entity";
-import { Column, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Player } from 'src/players/entities/player.entity';
+import { TournamentsPlayer } from 'src/tournaments-players/entities/tournaments-player.entity';
+import { Winner } from 'src/winners/entities/winner.entity';
+import {
+  Column,
+  Entity,
+  JoinTable,
+  ManyToMany,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
-
-@Entity("tournaments")
+@Entity('tournaments')
 export class Tournament {
-    @PrimaryGeneratedColumn()
-    id:number;
+  @PrimaryGeneratedColumn()
+  id: number;
 
-    @Column()
-    nameTournament:string;
+  @Column()
+  nameTournament: string;
 
-    @Column()
-    currentNumberPlayer:string;
+  @Column()
+  currentNumberPlayer: string;
 
-    @Column()
-    endDate:Date;
+  @Column()
+  TotalPlayers: number;
 
-    @Column()
-    moneyFinal:number;
+  @Column()
+  endDate: Date;
 
-    @OneToMany(()=>Winner,winners=>winners.tournament)
-    winner:Winner[];
+  @Column()
+  moneyFinal: number;
 
-    @OneToMany(()=>TournamentsPlayer,tournamentPlayer=>tournamentPlayer.tournament)
-    tournamentPlayer:TournamentsPlayer[];
+  @OneToMany(() => Winner, (winners) => winners.tournament)
+  winner: Winner[];
+
+  @OneToMany(
+    () => TournamentsPlayer,
+    (tournamentPlayer) => tournamentPlayer.tournament,
+  )
+  tournamentPlayer: TournamentsPlayer[];
 }
